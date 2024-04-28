@@ -1,5 +1,5 @@
 //
-//  KeyChainViewModel.swift
+//  KeyChainVC.swift
 //  lecture22
 //
 //  Created by MacBook Pro on 27.04.24.
@@ -19,10 +19,10 @@ class KeyChainVC {
     
     static func save(service: String, account: String, password: Data) throws {
         let query: [String: AnyObject] = [
-            kSecClass as String         : kSecClassGenericPassword,
-            kSecAttrService as String   : service as AnyObject,
-            kSecAttrAccount as String   : account as AnyObject,
-            kSecValueData as String     : password as AnyObject,
+            kSecClass as String        : kSecClassGenericPassword,
+            kSecAttrService as String  : service as AnyObject,
+            kSecAttrAccount as String  : account as AnyObject,
+            kSecValueData as String    : password as AnyObject,
         ]
         
         let status = SecItemAdd(query as CFDictionary, nil)

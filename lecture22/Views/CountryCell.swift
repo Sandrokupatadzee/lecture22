@@ -8,10 +8,10 @@
 import UIKit
 
 class CountryCell: UITableViewCell {
-
+    
     static let identifier = "CountryCell"
     private var country: Country?
-
+    
     private let countryFlag: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
@@ -22,8 +22,9 @@ class CountryCell: UITableViewCell {
     private let contryName: UILabel = {
         let label = UILabel()
         label.textColor = .label
-        label.textAlignment = .center
+        label.textAlignment = .right
         label.font = .systemFont(ofSize: 18, weight: .semibold)
+        label.numberOfLines = 2
         return label
     }()
     
@@ -46,24 +47,7 @@ class CountryCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(with country: Country) {
-        self.country = country
-        contryName.attributedText = attributedText(for: country.region)
-
-        guard let imageUrl = URL(string: country.flags.png) else {
-            return
-        }
-        URLSession.shared.dataTask(with: imageUrl) { [weak self] (data, response, error) in
-            guard let self = self, let data = data, let image = UIImage(data: data), error == nil else {
-                return
-            }
-            DispatchQueue.main.async {
-                self.countryFlag.image = image
-            }
-        }.resume()
-    }
-    
-//    MARK: - Functions
+    //    MARK: - Functions
     
     private func setupUI() {
         addSubview(countryFlag)
@@ -73,17 +57,17 @@ class CountryCell: UITableViewCell {
         countryFlag.translatesAutoresizingMaskIntoConstraints = false
         contryName.translatesAutoresizingMaskIntoConstraints = false
         actoinImage.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
-            
             countryFlag.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             countryFlag.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             countryFlag.heightAnchor.constraint(equalToConstant: 60),
             countryFlag.widthAnchor.constraint(equalToConstant: 100),
-        
+            
             contryName.centerYAnchor.constraint(equalTo: centerYAnchor),
             contryName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -35),
-
+            contryName.widthAnchor.constraint(equalToConstant: 200),
+            
             actoinImage.centerYAnchor.constraint(equalTo: centerYAnchor),
             actoinImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             actoinImage.heightAnchor.constraint(equalToConstant: 20),
@@ -91,10 +75,11 @@ class CountryCell: UITableViewCell {
         ])
     }
     
-    private func attributedText(for text: String) -> NSAttributedString {
-            let strokeTextAttributes: [NSAttributedString.Key: Any] = [
-                .font: UIFont.boldSystemFont(ofSize: 18)
-            ]
-            return NSAttributedString(string: text, attributes: strokeTextAttributes)
+    func updateCell(with item: CountryTableViewCellViewModel) {
+        contryName.text = item.countryName
+        guard let url = item.flagUrl   else {
+            return
         }
+        countryFlag.fetchImage(url: url)
+    }
 }

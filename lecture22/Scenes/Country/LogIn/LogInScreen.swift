@@ -11,7 +11,7 @@ class LogInScreen: UIViewController {
     
     let setImageButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(UIImage(named: "addImage"), for: .normal)
+        button.setImage(UIImage(named: "uploadImage"), for: .normal)
         return button
     }()
     
@@ -107,7 +107,7 @@ class LogInScreen: UIViewController {
         setupUI()
         printSavedCredentials()
         
-#warning("აქ უბრალოდ ვშლიდი დამახსოვრებულებს")
+#warning("ამას უბრალოდ დამახხსოვრებული ქრედენშალების წასაშლელად ვიყენებ")
         
 //                let keyChainVC = KeyChainVC()
 //                do {
@@ -244,12 +244,17 @@ class LogInScreen: UIViewController {
         }
     }
     
+//    @objc private func setImageButtonTapped() {
+//        let fileManagerVC = FileManagerVC()
+//        fileManagerVC.delegate = self
+//        present(fileManagerVC, animated: true, completion: nil)
+//    }
     @objc private func setImageButtonTapped() {
-        let imagePickerController = UIImagePickerController()
-        imagePickerController.delegate = self
-        imagePickerController.sourceType = .photoLibrary
-        present(imagePickerController, animated: true, completion: nil)
-    }
+          let imagePickerController = UIImagePickerController()
+          imagePickerController.delegate = self
+          imagePickerController.sourceType = .photoLibrary
+          present(imagePickerController, animated: true, completion: nil)
+      }
     
     private func printSavedCredentials() {
         guard let usernameData = KeyChainVC.get(service: "CountryApp", account: "username"),
@@ -288,3 +293,10 @@ extension LogInScreen: UIImagePickerControllerDelegate, UINavigationControllerDe
         }
     }
 }
+
+
+//extension LogInScreen: FileManagerDelegate {
+//    func didSelectImage(_ image: UIImage) {
+//        setImageButton.setImage(image, for: .normal)
+//    }
+//}

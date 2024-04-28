@@ -9,7 +9,7 @@ import UIKit
 
 class SecondScreenViewModel {
     
-    private let country: Country
+    let country: Country
     
     init(country: Country) {
         self.country = country

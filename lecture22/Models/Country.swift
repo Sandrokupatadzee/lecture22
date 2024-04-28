@@ -1,5 +1,5 @@
 //
-//  CountryModel.swift
+//  Country.swift
 //  lecture22
 //
 //  Created by MacBook Pro on 26.04.24.
@@ -9,6 +9,7 @@ import Foundation
 
 struct Country: Decodable {
     
+    let name: Name?
     let capital: [String]?
     let region: String
     let subregion: String?
@@ -26,8 +27,12 @@ struct Country: Decodable {
     let maps: Maps
 }
 
+struct Name: Decodable {
+    var official: String?
+    var common: String?
+}
+
 struct Flags: Decodable {
-    
     let png: String
     let svg: String
     let alt: String?

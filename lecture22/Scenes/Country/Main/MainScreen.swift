@@ -65,7 +65,7 @@ class MainScreen: UIViewController {
     func setupSearchController() {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search by capital or alternate spelling"
+        searchController.searchBar.placeholder = "Search by name, capital or altSpelling"
         navigationItem.searchController = searchController
         definesPresentationContext = true
     }
@@ -86,7 +86,8 @@ extension MainScreen: UITableViewDelegate, UITableViewDataSource {
             fatalError("Could not dequeue reusable cell")
         }
         let country = viewModel.isSearchModeON(searchController: searchController) ? viewModel.filteredCountries[indexPath.section] : viewModel.AllCountries[indexPath.section]
-        cell.configure(with: country)
+        let cellViewModel = CountryTableViewCellViewModel(country: country)
+        cell.updateCell(with: cellViewModel)
         cell.backgroundColor = .tertiarySystemBackground
         cell.layer.borderWidth = 1
         cell.layer.cornerRadius = 18
@@ -110,7 +111,8 @@ extension MainScreen: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let country = viewModel.isSearchModeON(searchController: searchController) ? viewModel.filteredCountries[indexPath.section] : viewModel.AllCountries[indexPath.section]
+        let country = viewModel.isSearchModeON(searchController: searchController) ? 
+        viewModel.filteredCountries[indexPath.section] : viewModel.AllCountries[indexPath.section]
         let viewModel = SecondScreenViewModel(country: country)
         let nextScreen = SecondScreen(viewModel)
         navigationController?.pushViewController(nextScreen, animated: true)

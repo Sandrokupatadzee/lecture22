@@ -150,14 +150,14 @@ class SecondScreen: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
-        title = "Details"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
+        self.navigationItem.title = self.viewModel.country.name?.common
+
         setupScrollView()
         configure()
     }
     
     private func setupScrollView() {
+        
         self.view.backgroundColor = .secondarySystemBackground
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(contentView)

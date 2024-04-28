@@ -33,20 +33,25 @@ class MainScreenViewModel {
 extension MainScreenViewModel {
     
     public func isSearchModeON(searchController: UISearchController?) -> Bool {
-        guard let searchController = searchController else {
-            return false
-        }
-
+        guard let searchController = searchController else { return false }
+        
         let isActive = searchController.isActive
         let searchText = searchController.searchBar.text ?? ""
         return isActive && !searchText.isEmpty
     }
-
+    
     public func updateSearchResults(searchBarText: String?) {
         filteredCountries = AllCountries
         
         if let searchText = searchBarText?.lowercased(), !searchText.isEmpty {
             filteredCountries = filteredCountries.filter { country in
+                
+                if let commonName = country.name?.common, commonName.lowercased().contains(searchText) {
+                    return true
+                }
+                if let officialName = country.name?.official, officialName.lowercased().contains(searchText) {
+                    return true
+                }
                 if country.capital?.first(where: { $0.lowercased().contains(searchText) }) != nil {
                     return true
                 }
